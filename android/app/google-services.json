@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "396006607725",
+    "firebase_url": "https://reactnative-cms-default-rtdb.firebaseio.com",
+    "project_id": "reactnative-cms",
+    "storage_bucket": "reactnative-cms.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:396006607725:android:339bccf4b0b2d64b026864",
+        "android_client_info": {
+          "package_name": "com.crs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "396006607725-7745lml402omt43q6sajh6hlmubi3c0u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2nGazqdIg0lgn3ob8t5oV3ha_vwIeknI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "396006607725-7745lml402omt43q6sajh6hlmubi3c0u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
