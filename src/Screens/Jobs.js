@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, ScrollView } from 'react-native';
 import { View, Card, CardItem, Body, Button, Item, Label, Input, Spinner } from 'native-base';
 import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 
@@ -11,9 +12,22 @@ export default class Jobs extends Component {
         company: [],
         students: [],
         isData: false,
+        user: []
     }
-
     componentDidMount() {
+        auth().onAuthStateChanged((user) => {
+            if (user) {
+                database().ref('users').once('value', ((data) => {
+                    for (var key in data.val()) {
+                        if (user.email === data.val()[key].email) {
+                            this.setState({
+                                user: data.val()[key]
+                            })
+                        }
+                    }
+                }))
+            }
+        })
         database()
             .ref('/job')
             .once('value', data => {
@@ -68,7 +82,6 @@ export default class Jobs extends Component {
                 </View>)
         )
     };
-
     render() {
         return (
             <View style={{ flex: 1, backgroundColor: "#fff", justifyContent: 'center', alignItems: 'center' }}>
@@ -76,20 +89,36 @@ export default class Jobs extends Component {
                     <View>
                         <Text>{this.list()}</Text>
                     </View>
-
                 </ScrollView>
-                <Button onPress={() => this.props.navigation.navigate('Apply')}
-                    style={{ position: 'absolute', bottom: 90, right: 20, borderRadius: 60, width: 65, height: 65, justifyContent: 'center', alignItems: 'center', backgroundColor: '#1C468A' }}>
-                    <Text style={{ color: '#fff' }}>
-                        Apply
+                {this.state.user.accountType === 'Company' ?
+                    <Button onPress={() => this.props.navigation.navigate('PostJob')}
+                        style={{ position: 'absolute', bottom: 20, right: 20, borderRadius: 60, width: 65, height: 65, justifyContent: 'center', alignItems: 'center', backgroundColor: '#1C468A' }}>
+                        <Text>
+                            <FontAwesome5 name='plus' size={30} color='#fff' />
+                        </Text>
+                    </Button>
+                    : this.state.user.accountType === 'Student' ?
+                        <Button onPress={() => this.props.navigation.navigate('Apply')}
+                            style={{ position: 'absolute', bottom: 20, right: 20, borderRadius: 60, width: 65, height: 65, justifyContent: 'center', alignItems: 'center', backgroundColor: '#1C468A' }}>
+                            <Text style={{ color: '#fff' }}>
+                                Apply
                     </Text>
-                </Button>
-                <Button onPress={() => this.props.navigation.navigate('PostJob')}
-                    style={{ position: 'absolute', bottom: 20, right: 20, borderRadius: 60, width: 65, height: 65, justifyContent: 'center', alignItems: 'center', backgroundColor: '#1C468A' }}>
-                    <Text>
-                        <FontAwesome5 name='plus' size={30} color='#fff' />
-                    </Text>
-                </Button>
+                        </Button>
+                        :
+                        <View style={{ position: 'absolute', bottom: 20, right: 20 }}>
+                            <Button onPress={() => this.props.navigation.navigate('PostJob')}
+                                style={{ borderRadius: 60, width: 65, height: 65, justifyContent: 'center', margin: 2, alignItems: 'center', backgroundColor: '#1C468A' }}>
+                                <Text>
+                                    <FontAwesome5 name='plus' size={30} color='#fff' />
+                                </Text>
+                            </Button>
+                            <Button onPress={() => this.props.navigation.navigate('Apply')}
+                                style={{ borderRadius: 60, width: 65, height: 65, justifyContent: 'center', margin: 2, alignItems: 'center', backgroundColor: '#1C468A' }}>
+                                <Text style={{ color: '#fff' }}>Apply</Text>
+                            </Button>
+                        </View>
+
+                }
             </View>
         )
     }

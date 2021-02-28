@@ -8,10 +8,12 @@ export default class Student extends Component {
         students: []
     }
     componentDidMount() {
-        database().ref('users/students').once('value', data => {
+        database().ref('users').once('value', data => {
             let arr = []
             for (var key in data.val()) {
-                arr.push(data.val()[key])
+                if (data.val()[key].accountType === 'Student') {
+                    arr.push(data.val()[key])
+                }
             }
             this.setState({
                 students: arr
@@ -26,9 +28,11 @@ export default class Student extends Component {
                     <List key={id}>
                         <ListItem first>
                             <View style={{ flexDirection: 'column', width: 320 }}>
-                                <Text style={{ fontWeight: 'bold', color: '#1C468A', fontSize: 22, fontFamily: 'Lemon' }}>{student.name}</Text>
-                                <Text style={{ fontSize: 18 }}>{student.email}</Text>
-                                <Text style={{ fontSize: 18 }}>{student.accountType}</Text>
+                                <Text style={{ fontWeight: 'bold', color: '#1C468A', fontSize: 18, fontFamily: 'Lemon' }}>{student.name}</Text>
+                                <Text style={{ fontSize: 16 }}>Age: {student.age}</Text>
+                                <Text style={{ fontSize: 16 }}>Qualification: {student.qualification}</Text>
+                                <Text style={{ fontSize: 16 }}>Contact: {student.contact}</Text>
+                                <Text style={{ fontSize: 16 }}>Email: {student.email}</Text>
                             </View>
                         </ListItem>
                     </List>

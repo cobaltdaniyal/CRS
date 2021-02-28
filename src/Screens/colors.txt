@@ -3,3 +3,20 @@ Secondary : #121212
 
 
 
+ componentDidMount() {
+        auth().onAuthStateChanged((user) => {
+            if (user) {
+                database().ref('users').once('value', ((data) => {
+                    for (var key in data.val()) {
+                        if (user.email === data.val()[key]) {
+                            this.setState({
+                                user: data.val()[key]
+                            })
+                        }
+                    }
+                }))
+            }
+        })
+    }
+
+
